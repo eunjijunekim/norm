@@ -234,10 +234,10 @@ Downsampling is performed for each type of `intronmappers.sam` and the `intergen
 
 * Count the number of reads
 
-		perl wc_all.pl <files> <outfile>
+		perl wc_all.pl <files> <outfile name>
 
 	* &lt;files> : a file with the names of the one intronmapper files (e.g. ls *intronmappers.1.sam > int.files.1.txt)
-	* &lt;outfile> : output file name (e.g. 1_intron_counts.txt)
+	* &lt;outfile name> : output file name (e.g. 1_intron_counts.txt)
 
  This outputs a txt file containing the line counts of all samples and the minimum line count.
 
