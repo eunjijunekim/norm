@@ -106,10 +106,10 @@ Downsampling is performed for each type of `exonmappers.sam`. Repeat the followi
 
 * Count the number of reads
 
-		perl wc_all.pl <files> <outfile>
+		perl wc_all.pl <files> <outfile name>
 
 	* &lt;files> : create a file with the names of the one exonmapper files (e.g. ls *exonmappers.1.sam > files.1.txt)
-	* &lt;outfile> : output file name (e.g. 1_exon_counts.txt)
+	* &lt;outfile name> : output file name (e.g. 1_exon_counts.txt)
 
  This outputs a txt file containing the line counts of all samples and the minimum line count.
 
