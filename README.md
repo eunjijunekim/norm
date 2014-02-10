@@ -47,7 +47,7 @@ This step removes all rows from input sam file except those that satisfy all of 
 
 Run the following command:
 
-    perl runall_filter.pl <sample dirs> <loc> <target num> <more ids> [options]
+    perl runall_filter.pl <sample dirs> <loc> <target num> <more ids> <sam file name> [options]
 
 > `filter_sam.pl` available for running one sample at a time
 
@@ -55,6 +55,7 @@ Run the following command:
 * &lt;loc> : the path of the directory with the sample directories
 * &lt;target num> : return at most this number of reads. Put zero to return all
 * &lt;more ids> : a file with the names of the `ribosomalids.txt` files. This must have the same number of rows as &lt;sample dirs> file and MUST BE IN THE SAME ORDER
+* &lt;sam file name> :  the name of sam file (e.g. RUM.sam)
 * option:<br>
   **-nu** :  set this if you want to return only non-unique mappers
 
