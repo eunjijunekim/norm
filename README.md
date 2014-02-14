@@ -24,14 +24,16 @@ This outputs a file called `reads.fa` of all samples to corresponding sample dir
 
 #####B. Run BLAST
 
-	perl runall_runblast.pl <sample dirs> <loc>
+	perl runall_runblast.pl <sample dirs> <loc> <samfile name> <blast dir> <db>
 
 > `runblast.pl` available for running one sample at a time
 
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
-
-This creates a file called `ribosomalids.txt` of all samples.
+* &lt;samfile name> : the name of sam file 
+* &lt;blast dir> : the blast dir (full path)
+* &lt;db> : database (full path)
+This creates `ribosomalids.txt` and `total_num_reads` of all samples.
 
 #### [Normalization Factor 1: ribo percents]: 
 `perl get_ribo_percents.pl > ribo_percents.txt`
