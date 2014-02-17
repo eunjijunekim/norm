@@ -34,7 +34,7 @@ This outputs a file called `reads.fa` of all samples to corresponding sample dir
 * &lt;blast dir> : the blast dir (full path)
 * &lt;db> : database (full path)
 
-This creates `ribosomalids.txt` and `total_num_reads` of all samples.
+This creates `ribosomalids.txt` and `total_num_reads.txt` of all samples.
 
 #### [Normalization Factor 1: ribo percents]: 
 `perl get_ribo_percents.pl > ribo_percents.txt`
@@ -42,7 +42,7 @@ This creates `ribosomalids.txt` and `total_num_reads` of all samples.
 ### 2. Run Filter
 This step removes all rows from input sam file except those that satisfy all of the following:
 
-  1. Unique mapper (Non-Unique mapper with **-nu** option)
+  1. Unique mapper / Non-Unique mapper
   2. Both forward and reverse map consistently
   3. id not in (the appropriate) file specified in &lt;more ids>
   4. Only on a numbered chromosome, X or Y
@@ -50,19 +50,18 @@ This step removes all rows from input sam file except those that satisfy all of 
 
 Run the following command:
 
-    perl runall_filter.pl <sample dirs> <loc> <target num> <more ids> <sam file name> [options]
+    perl runall_filter.pl <sample dirs> <loc> <sam file name> [options]
 
 > `filter_sam.pl` available for running one sample at a time
 
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
-* &lt;target num> : return at most this number of reads. Put zero to return all
-* &lt;more ids> : a file with the names of the `ribosomalids.txt` files. This must have the same number of rows as &lt;sample dirs> file and MUST BE IN THE SAME ORDER
 * &lt;sam file name> :  the name of sam file (e.g. RUM.sam)
 * option:<br>
+  **-u** : set this if you want to return only unique mappers
   **-nu** :  set this if you want to return only non-unique mappers
 
-This creates a directory called `Unique` (or `NU` with **-nu** option) and outputs a sam file called `filtered.sam` of all samples to the directory created.
+This creates directories called `Unique` and `NU` in each sample directory and outputs `filtered.sam` files of all samples to the directories created. By default it will return both unique and non-unique mappers. 
 
 ### 3. Quantify Exons
 ##### A. Create Master List of Exons
