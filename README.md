@@ -58,7 +58,7 @@ Run the following command:
 * &lt;loc> : the path of the directory with the sample directories
 * &lt;sam file name> :  the name of sam file (e.g. RUM.sam)
 * option:<br>
-  **-u** : set this if you want to return only unique mappers
+  **-u** : set this if you want to return only unique mappers<br>
   **-nu** :  set this if you want to return only non-unique mappers
 
 This creates directories called `Unique` and `NU` in each sample directory and outputs `filtered.sam` files of all samples to the directories created. By default it will return both unique and non-unique mappers. 
