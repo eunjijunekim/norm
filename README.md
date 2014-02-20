@@ -37,7 +37,12 @@ This outputs a file called `reads.fa` of all samples to corresponding sample dir
 This creates `ribosomalids.txt` and `total_num_reads.txt` of all samples.
 
 #### [Normalization Factor 1: ribo percents]: 
-`perl get_ribo_percents.pl > ribo_percents.txt`
+`perl get_ribo_percents.pl <loc>`
+
+* &lt;loc> : the location where the sample directories are
+
+It assumes there are files of ribosomal ids output from runblast.pl
+each with suffix \"ribosomalids.txt\". This will output `ribosomal_counts.txt` and `ribo_percents.txt`.
 
 ### 2. Run Filter
 This step removes all rows from input sam file except those that satisfy all of the following:
@@ -57,7 +62,7 @@ Run the following command:
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
 * &lt;sam file name> :  the name of sam file (e.g. RUM.sam)
-* option:<br>
+* options:<br>
   **-u** : set this if you want to return only unique mappers<br>
   **-nu** :  set this if you want to return only non-unique mappers
 
