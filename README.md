@@ -244,30 +244,31 @@ This will create `Junctions` directory and output `junctions_hq.bed`, `junctions
 
 ### 7. Master table of features counts
 #####A. Get Exonquants 
-a. If you want to quantify both Unique and Non-unique normalized exonmappers run this. If you're only interested in Unique or Non-Unique exonmappers, go to step 2.:
+a. If you want to quantify both Unique and Non-unique normalized exonmappers run this. If you're only interested in Unique or Non-Unique exonmappers, go to step b.:
 
-		perl cat_exonmappers_Unique_NU.pl <sample dirs> <loc>
+	perl cat_exonmappers_Unique_NU.pl <sample dirs> <loc>
 
-	* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
-    * &lt;loc> : the path of the directory with the sample directories
 
-    This will create `NORMALIZED_DATA/exonmappers/MERGED` directory and output concatenated `exonmappers.norm.sam` file of all samples to the directory created.
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+
+This will create `NORMALIZED_DATA/exonmappers/MERGED` directory and output concatenated `exonmappers.norm.sam` file of all samples to the directory created.
 
 b. Run Quantify exons
 
 Run the following command with **&lt;output sam?> = false**. This will output merged exonquants by default. If merged exonmappers do not exist, it will output Unique exonquants:
 
-		perl runall_quantify_exons.pl <sample dirs> <loc> <exons> <output sam?> [options]
+	perl runall_quantify_exons.pl <sample dirs> <loc> <exons> <output sam?> [options]
 
-	> `quantify_exons.pl` available for running one sample at a time
+> `quantify_exons.pl` available for running one sample at a time
 
-	* &lt;file names> : a file with the names of the normalized exonmappers files (without path)
-	* &lt;loc> : the path of the directory with the normalized exonmappers files
-	* &lt;exons> : the `NEW_master_list_of_exons.txt` file (with full path)
-	* &lt;output sam?> : false
-	* option:<br>**-NU-only** : set this for non-unique mappers
-	
-	This outputs `exonquants` file of all samples.
+* &lt;file names> : a file with the names of the normalized exonmappers files (without path)
+* &lt;loc> : the path of the directory with the normalized exonmappers files
+* &lt;exons> : the `NEW_master_list_of_exons.txt` file (with full path)
+* &lt;output sam?> : false
+* option:<br>**-NU-only** : set this for non-unique mappers
+		
+This outputs `exonquants` file of all samples.
 
 
 
