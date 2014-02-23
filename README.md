@@ -203,9 +203,9 @@ This will output the same number of rows from each file in each `sample_dir/Uniq
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
 * option:<br>
-  -u  :  set this if you want to return only unique mappers, otherwise by default
+  **-u**  :  set this if you want to return only unique mappers, otherwise by default
          it will return both unique and non-unique mappers.<br>
-  -nu :  set this if you want to return only non-unique mappers, otherwise by default
+  **-nu** :  set this if you want to return only non-unique mappers, otherwise by default
          it will return both unique and non-unique mappers.
 
 This will create `NORMALIZED_DATA`, `NORMALIZED_DATA/exonmappers`, and `NORMALIZED_DATA/notexonmappers` directories and output normalized exonmappers, intronmappers and intergenic mappers of all samples to the directories created.
@@ -224,13 +224,12 @@ This will create `NORMALIZED_DATA`, `NORMALIZED_DATA/exonmappers`, and `NORMALIZ
 
 This will create `FINAL_SAM`. Then, depending on the option given, it will make `FINAL_SAM/Unique`, `FINAL_SAM/NU`, and/or `FINAL_SAM/MERGED` directory and output final sam files to the directories created.
 
-### 6. Quantify Junctions
+### 6. Run sam2junctions
 
-###A. Run sam2junctions**
 By default, this will use merged final sam files as input. 
  
     perl runall_sam2junctions.pl <sample dirs> <loc> <genes> <genome> [options]
- 
+
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
 * &lt;genes> :the RUM gene info file (with full path)
@@ -243,6 +242,32 @@ By default, this will use merged final sam files as input.
  
 This will create `Junctions` directory and output `junctions_hq.bed`, `junctions_all.bed` and `junctions_all.rum` files of all samples.
 
+### 7. Master table of features counts
+#####A. Get Exonquants 
+1. If you want to quantify both Unique and Non-unique normalized exonmappers run this. If you're only interested in Unique or Non-Unique exonmappers, go to step 2.:
+
+	perl cat_exonmappers_Unique_NU.pl <sample dirs> <loc>
+
+	* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+    * &lt;loc> : the path of the directory with the sample directories
+
+    This will create `NORMALIZED_DATA/exonmappers/MERGED` directory and output concatenated `exonmappers.norm.sam` file of all samples to the directory created.
+
+2. Run Quantify exons
+
+Run the following command with **&lt;output sam?> = false**. This will output merged exonquants by default. If merged exonmappers do not exist, it will output Unique exonquants:
+
+	perl runall_quantify_exons.pl <sample dirs> <loc> <exons> <output sam?> [options]
+
+> `quantify_exons.pl` available for running one sample at a time
+
+* &lt;file names> : a file with the names of the normalized exonmappers files (without path)
+* &lt;loc> : the path of the directory with the normalized exonmappers files
+* &lt;exons> : the `NEW_master_list_of_exons.txt` file (with full path)
+* &lt;output sam?> : false
+* option:<br>**-NU-only** : set this for non-unique mappers
+
+This outputs `exonquants` file of all samples.
 
 
 
