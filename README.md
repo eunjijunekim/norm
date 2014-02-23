@@ -185,8 +185,46 @@ Run the following command with **&lt;output sam?> = true**. By default this will
 
 This outputs multiple files of all samples: `intronmappers.(1, 2, 3, ... 10).sam`, `intergenicmappers.sam`, and `intronquants` file.
 
-### 5. 
+### 5. Downsample
 
+##### A. Run head 
+	
+	perl runall_head.pl <sample dirs> <loc>
+
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+
+This will output the same number of rows from each file in each Sample Unique and NU directory of the same type.
+
+##### B. Concatenate head files
+
+	perl cat_headfiles.pl <sample dirs> <loc> [options]
+
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+* option:<br>
+  -u  :  set this if you want to return only unique mappers, otherwise by default
+         it will return both unique and non-unique mappers.<br>
+  -nu :  set this if you want to return only non-unique mappers, otherwise by default
+         it will return both unique and non-unique mappers.
+
+This will create `NORMALIZED_DATA`, `NORMALIZED_DATA/exonmappers`, and `NORMALIZED_DATA/notexonmappers` directories and output normalized exonmappers, intronmappers and intergenic mappers of all samples to the directories created.
+
+##### C. Merge normalized SAM files
+
+	perl make_final_samfile.pl <sample dirs> <loc> [options]
+
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+* option:<br>
+  -u  :  set this if you want to return only unique mappers, otherwise by default
+         it will return both unique, non-unique, and merged final sam files.<br>
+  -nu :  set this if you want to return only non-unique mappers, otherwise by default
+         it will return both unique, non-unique, and merged final sam files.
+
+This will create `FINAL_SAM`. Then, depending on the option given, it will make `FINAL_SAM/Unique`, `FINAL_SAM/NU`, and/or `FINAL_SAM/MERGED` directory and output final sam files to the directories created.
+
+### 6. Quantify Junctions
 
 
 
