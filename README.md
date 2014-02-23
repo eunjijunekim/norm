@@ -124,39 +124,39 @@ Run the following command with **&lt;output sam?> = true** . By default this wil
 This outputs multiple files of all samples: `exonmappers.(1, 2, 3, 4, ... 20).sam`, `notexonmappers.sam`, and `exonquants` file to `Unique` / `NU` directory inside each sample directory. 
 
 ##### C. Normalization Factors
-1. Ribo percents: 
+* Ribo percents: 
 
-	perl runall_get_ribo_percents.pl <sample dirs> <loc>
+		perl runall_get_ribo_percents.pl <sample dirs> <loc>
 
-* &lt;sample dirs> : a file with the names of the sample directories
-* &lt;loc> : the location where the sample directories are
+	* &lt;sample dirs> : a file with the names of the sample directories
+	* &lt;loc> : the location where the sample directories are
 
-It assumes there are files of ribosomal ids output from runblast.pl
+ It assumes there are files of ribosomal ids output from runblast.pl
 each with suffix "ribosomalids.txt". This will output `ribosomal_counts.txt` and `ribo_percents.txt`.
 
-2. Exon to nonexon signal:
+*. Exon to nonexon signal:
 
-	perl get_exon2nonexon_signal_stats.pl <sample dirs> <loc>
+		perl get_exon2nonexon_signal_stats.pl <sample dirs> <loc>
 
-* &lt;sample dirs> : a file with the names of the sample directories
-* &lt;loc> : the location where the sample directories are
-* option:<br>
-  **-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
-  **-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
+	* &lt;sample dirs> : a file with the names of the sample directories
+	* &lt;loc> : the location where the sample directories are
+	* option:<br>
+  	**-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
+  	**-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
 
-This will output `exon2nonexon_signal_stats_Unique.txt` and/or `exon2nonexon_signal_stats_NU.txt` depending on the option provided.
+ This will output `exon2nonexon_signal_stats_Unique.txt` and/or `exon2nonexon_signal_stats_NU.txt` depending on the option provided.
 
-3. One exon vs multi exons:
+*. One exon vs multi exons:
+	
+		perl get_1exon_vs_multi_exon_stats.pl  <sample dirs> <loc>
 
-	perl get_1exon_vs_multi_exon_stats.pl  <sample dirs> <loc>
+	* &lt;sample dirs> : a file with the names of the sample directories
+	* &lt;loc> : the location where the sample directories are
+	* option:<br>
+  	**-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
+	**-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
 
-* &lt;sample dirs> : a file with the names of the sample directories
-* &lt;loc> : the location where the sample directories are
-* option:<br>
-  **-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
-  **-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
-
-This will output `1exon_vs_multi_exon_stats_Unique.txt` and/or `1exon_vs_multi_exon_stats_NU.txt` depending on the option provided.
+ This will output `1exon_vs_multi_exon_stats_Unique.txt` and/or `1exon_vs_multi_exon_stats_NU.txt` depending on the option provided.
 
 ### 4. Quantify Introns
 ##### A. Create Master List of Introns
