@@ -194,7 +194,7 @@ This outputs multiple files of all samples: `intronmappers.(1, 2, 3, ... 10).sam
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
 
-This will output the same number of rows from each file in each Sample Unique and NU directory of the same type.
+This will output the same number of rows from each file in each `sample_dir/Unique` and/or `sample_dir/NU` directory of the same type.
 
 ##### B. Concatenate head files
 
@@ -217,38 +217,38 @@ This will create `NORMALIZED_DATA`, `NORMALIZED_DATA/exonmappers`, and `NORMALIZ
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
 * option:<br>
-  -u  :  set this if you want to return only unique mappers, otherwise by default
+  **-u**  :  set this if you want to return only unique mappers, otherwise by default
          it will return both unique, non-unique, and merged final sam files.<br>
-  -nu :  set this if you want to return only non-unique mappers, otherwise by default
+  **-nu** :  set this if you want to return only non-unique mappers, otherwise by default
          it will return both unique, non-unique, and merged final sam files.
 
 This will create `FINAL_SAM`. Then, depending on the option given, it will make `FINAL_SAM/Unique`, `FINAL_SAM/NU`, and/or `FINAL_SAM/MERGED` directory and output final sam files to the directories created.
 
 ### 6. Quantify Junctions
 
+###A. Run sam2junctions**
+By default, this will use merged final sam files as input. 
+ 
+    perl runall_sam2junctions.pl <sample dirs> <loc> <genes> <genome> [options]
+ 
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+* &lt;genes> :the RUM gene info file (with full path)
+* &lt;genome> : the RUM genome sequene one-line fasta file (with full path)
+* option:<br>
+  **-u**  :  set this if you want to return only unique junctions files, otherwise by default
+         it will return merged(unique+non-unique) junctions files.<br>
+  **-nu** :  set this if you want to return only non-unique files, otherwise by default
+         it will return merged(unique+non-unique) junctions files.
+ 
+This will create `Junctions` directory and output `junctions_hq.bed`, `junctions_all.bed` and `junctions_all.rum` files of all samples.
 
 
-* [Option 1] Use both Unique and Non-Unique mappers
 
- **A. Concatenate normalized Unique and Non-Unique exonmappers**
- 
-	  perl cat_exonmappers_Unique_NU.pl <files> <loc>
- 
- * &lt;files> : a file with the names of the normalized exonmappers (without path)
- * &lt;loc> : the path of the directory with the Unique and NU directory
- 
- This creates a directory called `junctions_all` and outputs a file called `exonmappers.ALL.norm.sam` of all samples to the directory created.
- 
- **B. Run sam2junctions**
- 
-      perl runall_sam2junctions.pl <file names> <loc> <genes> <genome>
- 
- * &lt;file names> : a file with the names of the `exonmappers.ALL.norm.sam` files (without path)
- * &lt;loc> : the path to the dir with the `exonmappers.ALL.norm.sam` files
- * &lt;genes> :the RUM gene info file (with full path)
- * &lt;genome> : the RUM genome sequene one-line fasta file (with full path)
- 
- This outputs `junctions_hq.bed`, `junctions_all.bed` and `junctions_all.rum` files for each  sample.
+
+
+
+
  
  **C. Master table of junctions counts**
  
@@ -258,70 +258,4 @@ This will create `FINAL_SAM`. Then, depending on the option given, it will make 
  * &lt;loc> : the path to the junctions_all directory
  
  This outputs `master_list_of_junctions_counts_MIN.txt` and `master_list_of_junctions_counts_MAX .txt` file, where MIN score is long overlap unique reads and max score is long overlap unique reads + long overlap NU reads.
-
-* [Option 2] Use Unique mappers Only
-
- **A. Run sam2junctions**
- 
-      perl runall_sam2junctions.pl <file names> <loc> <genes> <genome>
- 
- * &lt;file names> : a file with the names of the `exonmappers.norm.sam` files (without path)
- * &lt;loc> : the path to the dir with the files
- * &lt;genes> : the RUM gene info file (with full path)
- * &lt;genome> : the RUM genome sequene one-line fasta file (with full path)
- 
- This outputs `junctions_hq.bed`, `junctions_all.bed` and `junctions_all.rum` files for each  sample.
-
- **B. Master table of junctions counts**
- 
-	  perl juncs2spreadsheet.1.pl <file names> <loc>
- 
- * &lt;file names> : a file with the names of the `junctions_all.rum` file **sorted by group/condition** (without path)
- * &lt;loc> : the path to the `junctions_all.rum` files
- 
- This outputs a file called `master_list_of_junctions_counts.txt` file to the `Unique` directory.
-
-### 6. Merge normalized sam and quants files
-
-* Create a normalized sam file (final ver) of all samples by merging normalized exon, intron, and intergenicmappers
-
-	 perl cat_normalized_samfiles.pl <sample dirs> <loc>
-
-	* &lt;sample dirs> : a file with the names of the sample directories with RUM output (without path)
-	* &lt;loc> : the path of the directory with the normalized_exonmappers, normalized_intronmappers and normalized_intergenicmappers directory
-
- This creates a directory called `FINAL_SAM` and outputs `FINAL.norm.sam` file of all samples to the directory. 
-
-* Label, concatenate exons, junctions, and introns counts and filter low expressors
-
-	* Label the master list of counts files
-
- 	 		perl label_quants_file.pl <files> <loc>
-
- 		* &lt;files> : a file with the names of the master list of counts files (without path)
-		* &lt;loc> is the path to the master list of counts files
-
-	 This outputs labeled master list of counts files.
-
-	* Concatenate exon, intron, and junctions counts files
-
-		 	perl cat_master_list_of_counts.pl <files> <loc>
-
-		* &lt;files> : a file with the names of the master list of counts files
-		* &lt;loc> : the path of the directory with the labeled master list of counts files
-
-	 This creates a merged master list of counts file.
-	
-	* Filter low expressors
-
-			perl filter_low_expressors.pl <file> <number_of_samples> <cutoff> > <outfile name>
-
-		* &lt;file> : the merged master list of counts file without path
-		* &lt;number_of_samples> : number of samples
-		* &lt;cutoff> : cutoff value
-		* &lt;outfile name> : outfile name (e.g. `master_list_of_counts_FINAL.txt`)
-
- 	 This creates the FINAL spreadsheet. 
-
-
 
