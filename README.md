@@ -1,27 +1,62 @@
 ## Normalization
 
-### 0. Installation and Requirements
+### 0. Setting Up
 
-A. git clone the scripts from github
+#####A. Get Normalization Scripts
 
-B. BLAST
 
-C. Directory Structure
+#####B. Install BLAST
+Download [BLAST and BLAST databases] (http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download)
+
+#####C. Input Directory Structure
+Make sure your alignment outputs(sam files) are in each sample directory inside the `Aligned_DATA` folder.
+<pre>
+STUDY					
+└── Aligned_DATA					
+    ├── Sample_1					
+    │   └── Aligned.sam					
+    ├── Sample_2					
+    │   └── Aligned.sam					
+    ├── Sample_3					
+    │   └── Aligned.sam					
+    └── Sample_4					
+        └── Aligned.sam					
+</pre>					
+
+#####D. Output Directory Structure
+Once you complete the normalization pipeline, your directory structure will look like this:
 <pre>
 STUDY
-└── Aligned_DATA
-    ├── Sample_1
-    │   └── Aligned.sam
-    ├── Sample_2
-    │   └── Aligned.sam
-    ├── Sample_3
-    │   └── Aligned.sam
-    └── Sample_4
-        └── Aligned.sam
+│── Aligned_DATA
+│   ├── Sample_1
+│   │   ├── NU
+│   │   └── Unique
+│   ├── Sample_2
+│   │   ├── NU
+│   │   └── Unique
+│   ├── Sample_3
+│   │   ├── NU
+│   │   └── Unique
+│   └── Sample_4
+│       ├── NU
+│       └── Unique
+│
+└── NORMALIZED_DATA
+    ├── exonmappers
+    │   ├── MERGED
+    │   ├── NU
+    │   └── Unique
+    ├── notexonmappers
+    │    ├── MERGED
+    │    ├── NU
+    │    └── Unique
+    ├── FINAL_SAM
+    │   ├── MERGED
+    │   ├── NU
+    │   └── Unique
+    └── Junctions
 </pre>
-    
-
-
+    					
 ### 1. Run BLAST
 
 
