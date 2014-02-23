@@ -1,26 +1,47 @@
 ## Normalization
 
+### 0. Installation and Requirements
 
+A. git clone the scripts from github
 
-### 0. Installation
+B. BLAST
 
-* git clone
+C. Directory Structure
 
-* blast
+STUDY
+│── Aligned_DATA
+│   ├── Sample_1
+│   │   ├── NU
+│   │   └── Unique
+│   ├── Sample_2
+│   │   ├── NU
+│   │   └── Unique
+│   ├── Sample_3
+│   │   ├── NU
+│   │   └── Unique
+│   └── Sample_4
+│       ├── NU
+│       └── Unique
+│
+└── NORMALIZED_DATA
+    ├── exonmappers
+    │   ├── MERGED
+    │   ├── NU
+    │   └── Unique
+	├── notexonmappers
+    │    ├── MERGED
+    │    ├── NU
+    │    └── Unique
+    ├── FINAL_SAM
+    │   ├── MERGED
+    │   ├── NU
+    │   └── Unique
+    └── Junctions
+    
+
 
 ### 1. Run BLAST
-#####A. Create `reads.fa`
-Skip this step if the reads were aligned with RUM. 
 
-	perl runall_sam2readsfa.pl <sample dirs> <loc> <sam file name>
-
-> `sam2readsfa.pl` available for running one sample at a time  
-
-* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
-* &lt;loc> : the path of the directory with the sample directories
-* &lt;sam file name> : the name of sam file (e.g. RUM.sam)
-
-This outputs a file called `reads.fa` of all samples to corresponding sample directories.
 
 #####B. Run BLAST
 
