@@ -7,36 +7,18 @@ A. git clone the scripts from github
 B. BLAST
 
 C. Directory Structure
-
-STUDY<br>
-│── Aligned_DATA<br>
-│   ├── Sample_1<br>
-│   │   ├── NU<br>
-│   │   └── Unique<br>
-│   ├── Sample_2<br>
-│   │   ├── NU<br>
-│   │   └── Unique<br>
-│   ├── Sample_3<br>
-│   │   ├── NU<br>
-│   │   └── Unique<br>
-│   └── Sample_4<br>
-│       ├── NU<br>
-│       └── Unique<br>
-│<br>
-└── NORMALIZED_DATA<br>
-    ├── exonmappers<br>
-    │   ├── MERGED<br>
-    │   ├── NU<br>
-    │   └── Unique<br>
-	├── notexonmappers<br>
-    │    ├── MERGED<br>
-    │    ├── NU<br>
-    │    └── Unique<br>
-    ├── FINAL_SAM<br>
-    │   ├── MERGED<br>
-    │   ├── NU<br>
-    │   └── Unique<br>
-    └── Junctions<br>
+<pre>
+STUDY
+└── Aligned_DATA
+    ├── Sample_1
+    │   └── Aligned.sam
+    ├── Sample_2
+    │   └── Aligned.sam
+    ├── Sample_3
+    │   └── Aligned.sam
+    └── Sample_4
+        └── Aligned.sam
+</pre>
     
 
 

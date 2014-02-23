@@ -1,0 +1,12 @@
+STUDY
+└── Aligned_DATA
+    ├── Sample_1
+    │   └── Aligned.sam
+    ├── Sample_2
+    │   └── Aligned.sam
+    ├── Sample_3
+    │   └── Aligned.sam
+    └── Sample_4
+        └── Aligned.sam
+
+

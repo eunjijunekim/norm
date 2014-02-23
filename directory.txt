@@ -1,0 +1,29 @@
+STUDY
+│── Aligned_DATA
+│   ├── Sample_1
+│   │   ├── NU
+│   │   └── Unique
+│   ├── Sample_2
+│   │   ├── NU
+│   │   └── Unique
+│   ├── Sample_3
+│   │   ├── NU
+│   │   └── Unique
+│   └── Sample_4
+│       ├── NU
+│       └── Unique
+│
+└── NORMALIZED_DATA
+    ├── exonmappers
+    │   ├── MERGED
+    │   ├── NU
+    │   └── Unique
+    ├── notexonmappers
+    │    ├── MERGED
+    │    ├── NU
+    │    └── Unique
+    ├── FINAL_SAM
+    │   ├── MERGED
+    │   ├── NU
+    │   └── Unique
+    └── Junctions
