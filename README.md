@@ -8,35 +8,35 @@ B. BLAST
 
 C. Directory Structure
 
-STUDY
-│── Aligned_DATA
-│   ├── Sample_1
-│   │   ├── NU
-│   │   └── Unique
-│   ├── Sample_2
-│   │   ├── NU
-│   │   └── Unique
-│   ├── Sample_3
-│   │   ├── NU
-│   │   └── Unique
-│   └── Sample_4
-│       ├── NU
-│       └── Unique
-│
-└── NORMALIZED_DATA
-    ├── exonmappers
-    │   ├── MERGED
-    │   ├── NU
-    │   └── Unique
-	├── notexonmappers
-    │    ├── MERGED
-    │    ├── NU
-    │    └── Unique
-    ├── FINAL_SAM
-    │   ├── MERGED
-    │   ├── NU
-    │   └── Unique
-    └── Junctions
+STUDY<br>
+│── Aligned_DATA<br>
+│   ├── Sample_1<br>
+│   │   ├── NU<br>
+│   │   └── Unique<br>
+│   ├── Sample_2<br>
+│   │   ├── NU<br>
+│   │   └── Unique<br>
+│   ├── Sample_3<br>
+│   │   ├── NU<br>
+│   │   └── Unique<br>
+│   └── Sample_4<br>
+│       ├── NU<br>
+│       └── Unique<br>
+│<br>
+└── NORMALIZED_DATA<br>
+    ├── exonmappers<br>
+    │   ├── MERGED<br>
+    │   ├── NU<br>
+    │   └── Unique<br>
+	├── notexonmappers<br>
+    │    ├── MERGED<br>
+    │    ├── NU<br>
+    │    └── Unique<br>
+    ├── FINAL_SAM<br>
+    │   ├── MERGED<br>
+    │   ├── NU<br>
+    │   └── Unique<br>
+    └── Junctions<br>
     
 
 
