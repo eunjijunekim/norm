@@ -2,7 +2,7 @@
 
 ### 0. Setting Up
 
-#####A. Get Normalization Scripts
+#####A. Download
 
 
 #####B. Install BLAST
@@ -59,29 +59,17 @@ STUDY
     					
 ### 1. Run BLAST
 
-
-#####B. Run BLAST
-
 	perl runall_runblast.pl <sample dirs> <loc> <samfile name> <blast dir> <db>
 
 > `runblast.pl` available for running one sample at a time
 
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
-* &lt;samfile name> : the name of sam file 
+* &lt;samfile name> : the name of sam file (e.g. RUM.sam, Aligned.out.sam)
 * &lt;blast dir> : the blast dir (full path)
 * &lt;db> : database (full path)
 
-This creates `ribosomalids.txt` and `total_num_reads.txt` of all samples.
-
-#### [Normalization Factor 1: ribo percents]: 
-`perl runall_get_ribo_percents.pl <sample dirs> <loc>`
-
-* &lt;sample dirs> : a file with the names of the sample directories
-* &lt;loc> : the location where the sample directories are
-
-It assumes there are files of ribosomal ids output from runblast.pl
-each with suffix "ribosomalids.txt". This will output `ribosomal_counts.txt` and `ribo_percents.txt`.
+This outputs `ribosomalids.txt` and `total_num_reads.txt` of all samples.
 
 ### 2. Run Filter
 This step removes all rows from input sam file except those that satisfy all of the following:
@@ -92,7 +80,7 @@ This step removes all rows from input sam file except those that satisfy all of 
   4. Only on a numbered chromosome, X or Y
   5. Is a forward mapper (script outputs forward mappers only). Will output &lt;target num> read (pairs) (put 0 for this arg if you want to output all).
 
-Run the following command:
+Run the following command. By default it will return both unique and non-unique mappers.
 
     perl runall_filter.pl <sample dirs> <loc> <sam file name> [options]
 
@@ -100,153 +88,75 @@ Run the following command:
 
 * &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
 * &lt;loc> : the path of the directory with the sample directories
-* &lt;sam file name> :  the name of sam file (e.g. RUM.sam)
+* &lt;sam file name> :  the name of sam file
 * option:<br>
   **-u** : set this if you want to return only unique mappers<br>
   **-nu** :  set this if you want to return only non-unique mappers
 
-This creates directories called `Unique` and `NU` in each sample directory and outputs `filtered.sam` files of all samples to the directories created. By default it will return both unique and non-unique mappers. 
+This creates directories called `Unique` and `NU` in each sample directory and outputs `filtered.sam` files of all samples to the directories created. 
 
 ### 3. Quantify Exons
 ##### A. Create Master List of Exons
+Get master list of exons from a UCSC gene info file.
 
-* Get master list of exons from a UCSC gene info file.
+	perl get_master_list_of_exons_from_geneinfofile.pl <gene info file>
 
-	    perl get_master_list_of_exons_from_geneinfofile.pl <gene info file>
+* &lt;gene info file> : a UCSC gene annotation file including chrom, strand, txStrand, txEnd, exonCount, exonStarts, exonEnds, and name.
 
-	* &lt;gene info file> : a UCSC gene annotation file including chrom, strand, txStrand, txEnd, exonCount, exonStarts, exonEnds, and name.
-
- This outputs a file called `master_list_of_exons.txt`.
-
-* Create a study-specific master list of exons by adding novel exons from the study to the `master_list_of_exons.txt` file
-
-		perl make_new_master_list_of_exons.pl <sample dirs> <loc> <master list of exons>
-
-	* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path) 
-	* &lt;loc> : the path of the directory with the sample directories
-	* &lt;master list of exons> : the `master_list_of_exons.txt` file (with full path)
-
- This creates a txt file called `NEW_master_list_of_exons.txt`.
+This outputs a file called `master_list_of_exons.txt`.
 
 ##### B. Run quantify exons
 
-This step takes filtered sam files and splits them into 1, 2, 3, 4, 5 exonmappers and notexonmappers. 
+This step takes filtered sam files and splits them into 1, 2, 3 ... 20 exonmappers and notexonmappers. 
 
-Run the following command with **&lt;output sam?> = true**:
+Run the following command with **&lt;output sam?> = true** . By default this will return the Unique exonmappers. Use -NU-only to get Non-Unique exonmappers :
 
-	perl runall_quantify_exons.pl <file names> <loc> <exons> <output sam?> [options]
+	perl runall_quantify_exons.pl <sample dirs> <loc> <exons> <output sam?> [options]
 
 > `quantify_exons.pl` available for running one sample at a time
 
-* &lt;file names> : a file with the names of the `filtered.sam` files (without path)
-* &lt;loc> : the path of the directory with the `filtered.sam` files
-* &lt;exons> : the `NEW_master_list_of_exons.txt` file (with full path)
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+* &lt;exons> : the `master_list_of_exons.txt` file (with full path)
 * &lt;output sam?> : true
 * option:<br>**-NU-only** : set this for non-unique mappers
 
-This outputs multiple files of all samples: `exonmappers.(1, 2, 3, 4, 5).sam`, `notexonmappers.sam`, and `exonquants` file to `Unique` / `NU` directory inside each sample directory. 
+This outputs multiple files of all samples: `exonmappers.(1, 2, 3, 4, ... 20).sam`, `notexonmappers.sam`, and `exonquants` file to `Unique` / `NU` directory inside each sample directory. 
 
-##### C. Downsample
+##### C. Normalization Factors
+* Ribo percents: 
 
-Downsampling is performed for each type of `exonmappers.sam`. Repeat the following steps for all 5 types of exonmappers. (*Example given for 1 exonmapper.*)
+	perl runall_get_ribo_percents.pl <sample dirs> <loc>
 
-* Count the number of reads
+* &lt;sample dirs> : a file with the names of the sample directories
+* &lt;loc> : the location where the sample directories are
 
-		perl wc_all.pl <files> <outfile name>
+It assumes there are files of ribosomal ids output from runblast.pl
+each with suffix "ribosomalids.txt". This will output `ribosomal_counts.txt` and `ribo_percents.txt`.
 
-	* &lt;files> : create a file with the names of the one exonmapper files (e.g. ls *exonmappers.1.sam > files.1.txt)
-	* &lt;outfile name> : output file name (e.g. 1_exon_counts.txt)
+* Exon to nonexon signal:
 
- This outputs a txt file containing the line counts of all samples and the minimum line count.
+	perl get_exon2nonexon_signal_stats.pl <sample dirs> <loc>
 
-* Take the minimum line count from `1_exon_counts.txt` file and generate a sam file with the equal number of lines of all sample
-		
-		perl runall_head.pl <files> <loc> <num>
+* &lt;sample dirs> : a file with the names of the sample directories
+* &lt;loc> : the location where the sample directories are
+* option:<br>
+  **-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
+  **-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
 
-	* &lt;files> : a file with the names of the one exonmapper files
-	* &lt;loc> : the path to the exonmapper files
-	* &lt;num> : minimum line count
+This will output `exon2nonexon_signal_stats_Unique.txt` and/or `exon2nonexon_signal_stats_NU.txt` depending on the option provided.
 
- This creates a sam file with the &lt;num> rows of all samples.
+* One exon vs multi exons:
 
-* Make sure you perform **C** for all 5 exonmappers before proceeding.
+	perl get_1exon_vs_multi_exon_stats.pl  <sample dirs> <loc>
 
-##### D. Concatenate downsampled `exonmappers.(1, 2, 3, 4, 5).sam` files
+* &lt;sample dirs> : a file with the names of the sample directories
+* &lt;loc> : the location where the sample directories are
+* option:<br>
+  **-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
+  **-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
 
-	perl cat_exonmappers.pl <sample dirs> <loc>
-
-* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path) 
-* &lt;loc> : the path to the `exonmappers.sam` files
-
-This creates a directory called `normalized_exonmappers` and outputs a sam filed called `norm.sam` of all samples to the directory created.
-
-#### [Normalization Factor 2: exon to nonexon signal]: 
-`perl get_exon2nonexon_signal_stats.pl <exonquants files> > exon2nonexon_signal_stats.txt`
-
-> &lt;exonquants files> : a file with the names of the exonquants files
-
-#### [Normalization Factor 3: one exon vs multi exons]: 
-`perl get_1exon_vs_multi_exon_stats.pl <exonquants files> > 1exon_vs_multi_exon_stats.txt`
-
-> &lt;exonquants files> : a file with the names of the exonquants files
-
-##### E. Quantify exons for the normalized exonmappers
-
-Run the following command with **&lt;output sam?> = false**:
-
-	perl runall_quantify_exons.pl <file names> <loc> <exons> <output sam?> [options]
-
-> `quantify_exons.pl` available for running one sample at a time
-
-
-* &lt;file names> : a file with the names of the normalized exonmappers files (without path)
-* &lt;loc> : the path of the directory with the normalized exonmappers files
-* &lt;exons> : the `NEW_master_list_of_exons.txt` file (with full path)
-* &lt;output sam?> : false
-* option:<br>**-NU-only** : set this for non-unique mappers
-
- This outputs a file called `exonquants` of all samples.
-
-**F. Master table of exons counts**
-
-* [Option 1] Get spreadsheet for both Unique and Non-Unique mappers
-
-		perl quants_min_max.pl <file names> <feature type> <loc>
-
-	* &lt;file names> : a file with the names of the exonquants files **sorted by group/condition** (without path)
-	* &lt;feature type> : the type of quants file (e.g: exonquants)
-	* &lt;loc> : the path of the directory with the Unique and NU directory
-
- This creates a directory called `quants_all` and outputs a file called `exonquants.MIN_MAX` of all samples to the directory created. The min value is based on the Unique mappers only and the max value is based on all features.
-
- 	  perl quants2spreadsheet_min_max.pl <file names> <type of quants file> <loc>
-
- 	* &lt;file names> : a file with the names of the `exonquants.MIN_MAX` files **sorted by group/condition** (without path)
-	* &lt;type of quants file> : the type of quants file (e.g. exonquants)
-	* &lt;loc> : the path to `quants_all` directory
-
- This outputs two spreadsheets called `list_of_exons_counts_MIN.txt` and `list_of_exons_counts_MAX.txt`, containing min and max exon counts of all samples.
-
-* [Option 2] Get spreadsheet for either Unique or Non-Unique mappers
-
-		perl quants2spreadsheet.1.pl <file names> <type of quants file> <loc>
-
-	* &lt;file names> : a file with the names of the exonquants files **sorted by group/condition** (without path)
-	* &lt;type of quants file> : the type of quants file (e.g. exonquants)
-	* &lt;loc> : the path to the exonquants files 
-
- This outputs a txt file called `list_of_exons_counts.txt` to `Unique` or `NU` directory, containing exon counts of all samples.
-
-* Annotate
-
-	 	qlogin -l h_vmem=6G
- 		perl annotate.pl <annotation file> <features file> > <outfile>
-
-	* &lt;annotation file> : should be downloaded from UCSC known-gene track including at minimum name, chrom, strand, exonStarts, exonEnds, all kgXref fields and hgnc, spDisease, protein and gene fields from the Linked Tables table.
-	* &lt;features file> : the `list_of_exons_counts.txt`, `list_of_exons_counts_MIN.txt`, or `list_of_exons_counts_MAX.txt` file
-	* &lt;outfile> : output file name (e.g. `master_list_of_exons_counts.txt`, `master_list_of_exons_counts_MIN.txt` or `master_list_of_exons_counts_MAX.txt`)
-
- This adds annotation to the list of exons counts file.
+This will output `1exon_vs_multi_exon_stats_Unique.txt` and/or `1exon_vs_multi_exon_stats_NU.txt` depending on the option provided.
 
 ### 4. Quantify Introns
 ##### A. Create Master List of Introns
