@@ -109,7 +109,7 @@ This outputs a file called `master_list_of_exons.txt`.
 
 This step takes filtered sam files and splits them into 1, 2, 3 ... 20 exonmappers and notexonmappers. 
 
-Run the following command with **&lt;output sam?> = true** . By default this will return the Unique exonmappers. Use -NU-only to get Non-Unique exonmappers :
+Run the following command with **&lt;output sam?> = true**. By default this will return the Unique exonmappers. Use -NU-only to get Non-Unique exonmappers:
 
 	perl runall_quantify_exons.pl <sample dirs> <loc> <exons> <output sam?> [options]
 
@@ -169,101 +169,26 @@ This outputs a txt file called `master_list_of_introns.txt`.
 
 ##### B. Run quantify introns
 
-This step takes `notexonmappers.sam` files and splits them into 1, 2, 3, 4, 5, 6, 7, 8 intronmappers and intergenicmappers files. 
+This step takes `notexonmappers.sam` files and splits them into 1, 2, 3 ... 10 intronmappers and intergenicmappers files. 
 
-Run the following command with **&lt;output sam?> = true**:
+Run the following command with **&lt;output sam?> = true**. By default this will return the Unique intronmappers. Use -NU-only to get Non-Unique intronmappers:
 
-	perl runall_quantify_introns.pl <file names> <loc> <introns> <output sam?>
+	perl runall_quantify_introns.pl <sample dirs> <loc> <introns> <output sam?> [options]
 
 > `quantify_introns.pl` available for running one sample at a time
 
-* &lt;file names> : a file with the names of the `notexonmappers.sam` files (without path)
-* &lt;loc> : the path of the directory with the `notexonmappers.sam` files
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
 * &lt;introns> : the `master_list_of_introns.txt` file (with full path)
 * &lt;output sam?> : true
+* option:<br>**-NU-only** : set this for non-unique mappers
 
-This outputs multiple files of all samples: `intronmappers.(1, 2, 3, 4, 5, 6, 7, 8).sam`, `intergenicmappers.sam`, and `intronquants` file.
+This outputs multiple files of all samples: `intronmappers.(1, 2, 3, ... 10).sam`, `intergenicmappers.sam`, and `intronquants` file.
 
-##### C. Downsample
+### 5. 
 
-Downsampling is performed for each type of `intronmappers.sam` and the `intergenicmappers.sam` file. Repeat the following steps for all 8 types of intronmappers and the intergenicmappers. (*Example given for 1 intronmapper.*)
 
-* Count the number of reads
 
-		perl wc_all.pl <files> <outfile name>
-
-	* &lt;files> : a file with the names of the one intronmapper files (e.g. ls *intronmappers.1.sam > int.files.1.txt)
-	* &lt;outfile name> : output file name (e.g. 1_intron_counts.txt)
-
- This outputs a txt file containing the line counts of all samples and the minimum line count.
-
-* Take the minimum line count from `1_intron_counts.txt` file and generate a sam file with the equal number of lines of all samples
-		
-		perl runall_head.pl <files> <loc> <num>
-
-	* &lt;files> : a file with the names of the one intronmapper files
-	* &lt;loc> : the path to the intronmapper files
-	* &lt;num> : minimum line count
-
- This creates a sam file with the &lt;num> rows of all samples.
-
-* Make sure you perform **C** for all 8 intronmappers and intergenicmappers before proceeding.
-
-#####D. Concatenate downsampled `intronmappers.(1, 2, 3, 4, 5, 6, 7, 8).sam` files
-
-	perl cat_intronmappers.pl <sample dirs> <loc>
-
-* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path) 
-* &lt;loc> : the path to the intronmappers files
-
-This creates a directory called `normalized_intronmappers` and outputs a file called `norm.sam` of all samples to the directory created. It also creates `normalized_intergenicmappers` directory and puts the normalized intergenicmappers files to the directory.
-
-##### E. Quantify introns for the normalized intronmappers
-
-Run the following command with **&lt;output sam?> = false**:
-
-	perl runall_quantify_introns.pl <file names> <loc> <introns> <output sam?>
-
-> `quantify_introns.pl` avilable for running one sample at a time
-
-* &lt;file names> : a file with the names of the normalized intronmappers files (without path)
-* &lt;loc> : the path of the directory with the normalized intronmappers files
-* &lt;introns> : the `master_list_of_intron.txt` file (with full path)
-* &lt;output sam?> : false
-
-This outputs a file called `intronquants` of all samples.
-
-##### F. Master table of introns counts
-
-* [Option 1] Get spreadsheet for both Unique and Non-Unique mappers
-
-		perl quants_min_max.pl <file names> <feature type> <loc>
-
-	* &lt;file names> : a file with the names of the intronquants files **sorted by group/condition** (without path)
-	* &lt;feature type> : the type of quants file (e.g: intronquants)
-	* &lt;loc> : the path of the directory with the Unique and NU directory
-
- This creates a directory called `quants_all` and outputs a file called `intronquants.MIN_MAX` of all samples to the directory created. The min value is based on the Unique mappers only and the max value is based on all features.
-
-	  perl quants2spreadsheet_min_max.pl <file names> <type of quants file> <loc>
-
- 	* &lt;file names> : a file with the names of the `intronquants.MIN_MAX` files **sorted by group/condition** (without path)
-	* &lt;type of quants file> : the type of quants file. (e.g. intronquants)
-	* &lt;loc> : the path to the `quants_all` directory
-
- This outputs two spreadsheets called `master_list_of_introns_counts_MIN.txt` and `master_list_of_introns_counts_MAX.txt`, containing min and max intron counts of all samples.
-
-* [Option 2] Get spreadsheet for either Unique or Non-Unique mappers
-
-		perl quants2spreadsheet.1.pl <file names> <type of quants file> <loc>
-
-	* &lt;file names> : a file with the names of the intronquants files **sorted by group/condition** (without path)
-	* &lt;type of quants file> : the type of quants file (e.g. intronquants)
-	* &lt;loc> : the path to the intronquants files 
-
- This outputs a txt file called `master_list_of_exons_counts.txt`, containing intron counts of all samples.
-
-### 5. Quantify Junctions
 
 * [Option 1] Use both Unique and Non-Unique mappers
 
