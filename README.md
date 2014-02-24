@@ -64,7 +64,8 @@ Create a file with the names of the sample directories (sorted by condition). Th
 
 > `runblast.pl` available for running one sample at a time
 
-* &lt;sample dirs> : a file with the names of the sample directories (without path)
+* &lt;sample dirs> : a file with the names of the sample directories (without path)<br><br>
+
     e.g. the * &lt;sample dirs> should look like this:<br> 
       Sample_1<br>
       Sample_2<br>
