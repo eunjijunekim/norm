@@ -58,6 +58,7 @@ STUDY
 </pre>
     					
 ### 1. Run BLAST
+Create a file with the names of the sample directories (sorted by condition). This file will be used throughout the pipeline. 
 
 	perl runall_runblast.pl <sample dirs> <loc> <samfile name> <blast dir> <db>
 
