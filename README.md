@@ -65,10 +65,10 @@ Create a file with the names of the sample directories (sorted by condition). Th
 > `runblast.pl` available for running one sample at a time
 
 * &lt;sample dirs> : a file with the names of the sample directories (without path)
-  e.g.: 
-    Sample_1
-    Sample_2
-    Sample_3
+    e.g.: 
+      Sample_1
+      Sample_2
+      Sample_3
 * &lt;loc> : the path of the directory with the sample directories
 * &lt;samfile name> : the name of sam file (e.g. RUM.sam, Aligned.out.sam)
 * &lt;blast dir> : the blast dir (full path)
