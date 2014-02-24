@@ -307,7 +307,7 @@ This will create `list_of_exons_counts`, `master_list_of_introns_counts`, and `m
 	
 	perl run_annotate.pl <file of features files> <annotation file> <loc>
 
-* &lt;file of features files : a file with the names of the features files to be annotated
+* &lt;file of features files> : a file with the names of the features files to be annotated
 * &lt;annotation file> : should be downloaded from UCSC known-gene track including
 at minimum name, chrom, strand, exonStarts, exonEnds, all kgXref fields and hgnc, spDisease,\
  protein and gene fields from the
@@ -316,7 +316,7 @@ Linked Tables table.
 
 This will generate `master_list_of_exons_counts`.
 
-**c. Filter low expressors
+**c. Filter low expressors**
 
 	perl runall_filter_low_expressors.pl <file of quants files> <number_of_samples> <cutoff> <loc>
 
@@ -325,4 +325,4 @@ This will generate `master_list_of_exons_counts`.
 * &cutoff> : cutoff value
 * &loc> : the path to the sample directories
 
-This will output the final spreadsheets: `FINAL_master_list_of_exons_counts`, `FINAL_master_list_of_introns_counts`, `FINAL_master_list_of_junctions_counts`.
+This will output `FINAL_master_list_of_exons_counts`, `FINAL_master_list_of_introns_counts`, `FINAL_master_list_of_junctions_counts`.
