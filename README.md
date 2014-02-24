@@ -244,7 +244,9 @@ This will create `Junctions` directory and output `junctions_hq.bed`, `junctions
 
 ### 7. Master table of features counts
 #####A. Get Exonquants 
-a. If you want to quantify both Unique and Non-unique normalized exonmappers run this. If you're only interested in Unique or Non-Unique exonmappers, go to step b.:
+**a. Concatenate unique and non-unique normalized exonmappers**
+
+If you want to quantify both Unique and Non-unique normalized exonmappers run this. If you're only interested in Unique or Non-Unique exonmappers, go to step b.:
 
 	perl cat_exonmappers_Unique_NU.pl <sample dirs> <loc>
 
@@ -254,34 +256,73 @@ a. If you want to quantify both Unique and Non-unique normalized exonmappers run
 
 This will create `NORMALIZED_DATA/exonmappers/MERGED` directory and output concatenated `exonmappers.norm.sam` file of all samples to the directory created.
 
-b. Run Quantify exons
+**b. Run Quantify exons**
 
-Run the following command with **&lt;output sam?> = false**. This will output merged exonquants by default. If merged exonmappers do not exist, it will output Unique exonquants:
+Run the following command with **&lt;output sam?> = false**. This will output merged exonquants by default. If merged exonmappers do not exist, it will output unique exonquants. Use -NU-only to get non-unique exonquants:
 
 	perl runall_quantify_exons.pl <sample dirs> <loc> <exons> <output sam?> [options]
 
 > `quantify_exons.pl` available for running one sample at a time
 
-* &lt;file names> : a file with the names of the normalized exonmappers files (without path)
-* &lt;loc> : the path of the directory with the normalized exonmappers files
-* &lt;exons> : the `NEW_master_list_of_exons.txt` file (with full path)
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+* &lt;exons> : the `master_list_of_exons.txt` file (with full path)
 * &lt;output sam?> : false
 * option:<br>**-NU-only** : set this for non-unique mappers
 		
 This outputs `exonquants` file of all samples.
 
+#####B. Get Intronquants
 
+Run the following command with **&lt;output sam?> = false**. By default this will return unique intronquants. Use -NU-only to get non-unique intronquants:
 
+	perl runall_quantify_introns.pl <sample dirs> <loc> <introns> <output sam?> [options]
 
+> `quantify_introns.pl` available for running one sample at a time
 
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+* &lt;introns> : the `master_list_of_introns.txt` file (with full path)
+* &lt;output sam?> : false
+* option:<br>**-NU-only** : set this for non-unique mappers
 
- 
- **C. Master table of junctions counts**
- 
-	  perl juncs2spreadsheet_min_max.pl <file names> <loc>
- 
- * &lt;file names> : a file with the names of the `junctions_all.rum` file **sorted by group/condition** (without path)
- * &lt;loc> : the path to the junctions_all directory
- 
- This outputs `master_list_of_junctions_counts_MIN.txt` and `master_list_of_junctions_counts_MAX .txt` file, where MIN score is long overlap unique reads and max score is long overlap unique reads + long overlap NU reads.
+This outputs `intronquants` file of all samples.
 
+#####C. Make Final Spreadsheets
+**a. Run quants2spreadsheet and juncs2spreadsheet**
+
+	perl make_final_spreadsheets.pl <sample dirs> <loc> [options]
+
+* &lt;sample dirs> : a file with the names of the sample directories with SAM file/alignment output (without path)
+* &lt;loc> : the path of the directory with the sample directories
+* option:<br>
+  **-u**  :  set this if you want to return only unique, otherwise by default
+         it will return min and max spreadsheets.<br>
+  **-nu** :  set this if you want to return only non-unique, otherwise by default
+         it will return min and max spreadsheets.
+
+This will create `list_of_exons_counts`, `master_list_of_introns_counts`, and `master_list_of_junctions_counts` files. 
+
+**b. Annotate `list_of_exons_counts`**
+	
+	perl run_annotate.pl <file of features files> <annotation file> <loc>
+
+* &lt;file of features files : a file with the names of the features files to be annotated
+* &lt;annotation file> : should be downloaded from UCSC known-gene track including
+at minimum name, chrom, strand, exonStarts, exonEnds, all kgXref fields and hgnc, spDisease,\
+ protein and gene fields from the
+Linked Tables table.
+* &lt;loc> : the path to the sample directories.
+
+This will generate `master_list_of_exons_counts`.
+
+**c. Filter low expressors
+
+	perl runall_filter_low_expressors.pl <file of quants files> <number_of_samples> <cutoff> <loc>
+
+* &file of quants files> : a file with the names of the quants file without path
+* &number_of_samples> : number of samples
+* &cutoff> : cutoff value
+* &loc> : the path to the sample directories
+
+This will output the final spreadsheets: `FINAL_master_list_of_exons_counts`, `FINAL_master_list_of_introns_counts`, `FINAL_master_list_of_junctions_counts`.
