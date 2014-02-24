@@ -70,7 +70,7 @@ Create a file with the names of the sample directories (sorted by condition). Th
 * &lt;blast dir> : the blast dir (full path)
 * &lt;db> : database (full path)
 
-This outputs `ribosomalids.txt` and `total_num_reads.txt` of all samples.
+This outputs `ribosomalids.txt` and `total_num_reads.txt` of samples to each sample directory.
 
 ### 2. Run Filter
 This step removes all rows from input sam file except those that satisfy all of the following:
@@ -110,7 +110,7 @@ This outputs a file called `master_list_of_exons.txt`.
 
 This step takes filtered sam files and splits them into 1, 2, 3 ... 20 exonmappers and notexonmappers. 
 
-Run the following command with **&lt;output sam?> = true**. By default this will return the Unique exonmappers. Use -NU-only to get Non-Unique exonmappers:
+Run the following command with **&lt;output sam?> = true**. By default this will return unique exonmappers. Use -NU-only to get non-unique exonmappers:
 
 	perl runall_quantify_exons.pl <sample dirs> <loc> <exons> <output sam?> [options]
 
@@ -132,8 +132,7 @@ This outputs multiple files of all samples: `exonmappers.(1, 2, 3, 4, ... 20).sa
 	* &lt;sample dirs> : a file with the names of the sample directories
 	* &lt;loc> : the location where the sample directories are
 
- It assumes there are files of ribosomal ids output from runblast.pl
-each with suffix "ribosomalids.txt". This will output `ribosomal_counts.txt` and `ribo_percents.txt`.
+It assumes there are files of ribosomal ids output from runblast.pl each with suffix "ribosomalids.txt". This will output `ribosomal_counts.txt` and `ribo_percents.txt` to `Aligned_DATA` directory.
 
 * Exon to nonexon signal:
 
@@ -145,7 +144,7 @@ each with suffix "ribosomalids.txt". This will output `ribosomal_counts.txt` and
   	**-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
   	**-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
 
- This will output `exon2nonexon_signal_stats_Unique.txt` and/or `exon2nonexon_signal_stats_NU.txt` depending on the option provided.
+ This will output `exon2nonexon_signal_stats_Unique.txt` and/or `exon2nonexon_signal_stats_NU.txt` depending on the option provided to `Aligned_DATA` directory.
 
 * One exon vs multi exons:
 	
@@ -155,9 +154,9 @@ each with suffix "ribosomalids.txt". This will output `ribosomal_counts.txt` and
 	* &lt;loc> : the location where the sample directories are
 	* option:<br>
   	**-u** : set this if you want to return only unique stats, otherwise by default it will return both unique and non-uniqe stats<br>
-	**-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
+  	**-nu** :  set this if you want to return only non-unique statsotherwise by default it will return both unique and non-uniqe stats
 
- This will output `1exon_vs_multi_exon_stats_Unique.txt` and/or `1exon_vs_multi_exon_stats_NU.txt` depending on the option provided.
+ This will output `1exon_vs_multi_exon_stats_Unique.txt` and/or `1exon_vs_multi_exon_stats_NU.txt` depending on the option provided to `Aligned_DATA` directory.
 
 ### 4. Quantify Introns
 ##### A. Create Master List of Introns
@@ -172,7 +171,7 @@ This outputs a txt file called `master_list_of_introns.txt`.
 
 This step takes `notexonmappers.sam` files and splits them into 1, 2, 3 ... 10 intronmappers and intergenicmappers files. 
 
-Run the following command with **&lt;output sam?> = true**. By default this will return the Unique intronmappers. Use -NU-only to get Non-Unique intronmappers:
+Run the following command with **&lt;output sam?> = true**. By default this will return unique intronmappers. Use -NU-only to get non-unique intronmappers:
 
 	perl runall_quantify_introns.pl <sample dirs> <loc> <introns> <output sam?> [options]
 
@@ -184,7 +183,7 @@ Run the following command with **&lt;output sam?> = true**. By default this will
 * &lt;output sam?> : true
 * option:<br>**-NU-only** : set this for non-unique mappers
 
-This outputs multiple files of all samples: `intronmappers.(1, 2, 3, ... 10).sam`, `intergenicmappers.sam`, and `intronquants` file.
+This outputs multiple files of all samples: `intronmappers.(1, 2, 3, ... 10).sam`, `intergenicmappers.sam`, and `intronquants` file to `Unique` / `NU` directory inside each sample directory.
 
 ### 5. Downsample
 
@@ -247,7 +246,7 @@ This will create `Junctions` directory and output `junctions_hq.bed`, `junctions
 #####A. Get Exonquants 
 **a. Concatenate unique and non-unique normalized exonmappers**
 
-If you want to quantify both Unique and Non-unique normalized exonmappers run this. If you're only interested in Unique or Non-Unique exonmappers, go to step b.:
+If you want to quantify both Unique and Non-unique normalized exonmappers run this. If you're only interested in either Unique or Non-Unique exonmappers, go to step b.:
 
 	perl cat_exonmappers_Unique_NU.pl <sample dirs> <loc>
 
@@ -311,8 +310,7 @@ This will create `list_of_exons_counts`, `master_list_of_introns_counts`, and `m
 * &lt;file of features files> : a file with the names of the features files to be annotated
 * &lt;annotation file> : should be downloaded from UCSC known-gene track including
 at minimum name, chrom, strand, exonStarts, exonEnds, all kgXref fields and hgnc, spDisease,\
- protein and gene fields from the
-Linked Tables table.
+ protein and gene fields from the Linked Tables table.
 * &lt;loc> : the path to the sample directories.
 
 This will generate `master_list_of_exons_counts`.
